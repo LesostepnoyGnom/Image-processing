@@ -246,11 +246,11 @@ path_img = r'D:/abyss_of_work/main/Aleksandr_G.K/2021/Image-processing/CV2-metho
 
 # ============================================================================
 
+'''
 # =========================================#==================================
 # Анализ изображений  с помощью гистограмм #
 # =========================================#
 
-'''
 images: it is the source image
 channels: it is the index of channel for which we calculate histogram.
 For grayscale image, its value is [0]
@@ -281,3 +281,121 @@ ranges: this is our RANGE. Normally, it is [0,256].
 # cv2.destroyAllWindows()
 
 # ============================================================================
+
+'''
+# ==========#=================================================================
+# Threshold #
+# ==========#
+В компьютерном зрении этот метод определения порога применяется к изображениям в градациях серого.
+Поэтому изначально изображение должно быть преобразовано в цветовое пространство оттенков серого. 
+
+cv2.THRESH_BINARY: если интенсивность пикселей больше установленного порога, устанавливается значение 255, в противном случае устанавливается значение 0 (черный).
+cv2.THRESH_BINARY_INV: инвертированный или противоположный регистр cv2.THRESH_BINARY.
+cv.THRESH_TRUNC: если значение интенсивности пикселя больше порогового значения, оно обрезается до порогового значения. Значения пикселей устанавливаются такими же, как пороговое значение. Все остальные значения остаются прежними.
+cv.THRESH_TOZERO: Интенсивность пикселей установлена на 0, для всех пикселей яркость меньше порогового значения.
+cv.THRESH_TOZERO_INV: инвертированный или противоположный регистр cv2.THRESH_TOZERO.
+'''
+
+# img = cv2.imread('toad.jpg', 0)
+
+# ret, thresh1 = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY)
+# ret, thresh2 = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY_INV)
+# ret, thresh3 = cv2.threshold(img, 120, 255, cv2.THRESH_TRUNC)
+# ret, thresh4 = cv2.threshold(img, 120, 255, cv2.THRESH_TOZERO)
+# ret, thresh5 = cv2.threshold(img, 120, 255, cv2.THRESH_TOZERO_INV)
+
+# cv2.imshow('Binary Threshold', thresh1)
+# cv2.imshow('Binary Threshold Inverted', thresh2)
+# cv2.imshow('Truncated Threshold', thresh3)
+# cv2.imshow('Set to 0', thresh4)
+# cv2.imshow('Set to 0 Inverted', thresh5)
+
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# ============================================================================
+
+'''
+# ===================#========================================================
+# Adaptive Threshold #
+# ===================#
+
+Адаптивная пороговая обработка - это метод,
+при котором пороговое значение рассчитывается для небольших регионов.
+Это приводит к разным пороговым значениям для разных регионов в отношении изменения освещения.
+'''
+# img = cv2.imread('toad.jpg', 0)
+
+# thresh1 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
+#                                           cv2.THRESH_BINARY, 199, 5)
+  
+# thresh2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+#                                           cv2.THRESH_BINARY, 199, 5)
+# cv2.imshow('Adaptive Mean', thresh1)
+# cv2.imshow('Adaptive Gaussian', thresh2)
+
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# ============================================================================
+
+'''
+# ==================#=========================================================
+# Otsu Thresholding #
+# ==================#
+
+В Otsu Thresholding значение порога не выбирается, а определяется автоматически.
+Рассматривается бимодальное изображение (два различных значения изображения).
+Созданная гистограмма содержит два пика. Итак, общим условием будет выбор порогового значения,
+которое находится в середине обоих пиковых значений гистограммы.
+
+Syntax: cv2.threshold(source, thresholdValue, maxVal, thresholdingTechnique)
+thresholdValue: Значение порога, ниже и выше которого значения пикселей будут соответственно изменяться.
+maxVal: максимальное значение, которое может быть присвоено пикселю.
+thresholdingTechnique: Тип применяемого порогового значения.
+'''
+
+# img = cv2.imread('toad.jpg', 0)
+
+# ret, thresh1 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + 
+#                                             cv2.THRESH_OTSU)
+# cv2.imshow('Otsu Threshold', thresh1)
+
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# ============================================================================
+
+'''
+# ============================================================#===============
+# Convert an image from one color space to another. Gray, HSV #
+# ============================================================#
+
+Syntax: cv2.cvtColor(src, code[, dst[, dstCn]])
+
+src: это изображение, цветовое пространство которого необходимо изменить.
+code: это код преобразования цветового пространства.
+dst: это выходное изображение того же размера и глубины, что и изображение src.
+Это необязательный параметр.
+dstCn: это количество каналов в конечном изображении.
+Если параметр равен 0, то количество каналов определяется автоматически из src и кода.
+Это необязательный параметр. 
+'''
+
+# img = cv2.imread('toad.jpg')
+
+# image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# cv2.imshow('GRAY', image)
+
+'''
+HSV color space
+'''
+
+# image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+# cv2.imshow('HSV', image)
+
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# ============================================================================
+
