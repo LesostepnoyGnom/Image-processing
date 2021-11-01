@@ -399,3 +399,118 @@ HSV color space
 
 # ============================================================================
 
+'''
+# =======================================================#====================
+# Цветовой фильтр. Filter Color, вырезание нужного цвета #
+# =======================================================#
+'''
+
+# cap = cv2.VideoCapture(0)
+ 
+# while(1):
+#     _, frame = cap.read()
+    
+#     frame = cv2.fastNlMeansDenoisingColored(frame, None, 10, 10, 7, 15)
+#     # It converts the BGR color space of image to HSV color space
+#     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    
+#     # Threshold of blue in HSV space
+#     lower_blue = np.array([60, 35, 140])
+#     upper_blue = np.array([180, 255, 255])
+    
+#     # preparing the mask to overlay
+#     mask = cv2.inRange(hsv, lower_blue, upper_blue)
+    
+#     # The black region in the mask has the value of 0,
+#     # so when multiplied with original image removes all non-blue regions
+#     result = cv2.bitwise_and(frame, frame, mask = mask)
+    
+#     cv2.imshow('frame', frame)
+#     cv2.imshow('mask', mask)
+#     cv2.imshow('result', result)
+     
+#     k = cv2.waitKey(30) & 0xff
+#     if k == 27:
+#         break
+# cv2.destroyAllWindows()
+# cap.release()
+    
+# ============================================================================
+
+'''
+# ==========================#=================================================
+# Denoising. Как убарть шум #
+# ==========================#
+Syntax: cv2.fastNlMeansDenoisingColored( P1, P2, float P3, float P4, int P5, int P6)
+P1 – Source Image Array
+P2 – Destination Image Array
+P3 – Size in pixels of the template patch that is used to compute weights.
+P4 – Size in pixels of the window that is used to compute a weighted average for the given pixel.
+P5 – Parameter regulating filter strength for luminance component.
+P6 – Same as above but for color components // Not used in a grayscale image.
+'''
+# img = cv2.imread('toad.jpg')
+# dst = cv2.fastNlMeansDenoisingColored(img, None, 10, 10, 6, 15)
+
+# cv2.imshow('dst', dst)
+
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# ============================================================================
+
+'''
+# =====================#======================================================
+# Поиск контуров фигур #
+# =====================#
+'''
+
+# img2 = cv2.imread('figures.jpg', cv2.IMREAD_COLOR)
+# img = cv2.imread('figures.jpg', 0)
+# font = cv2.FONT_HERSHEY_COMPLEX
+
+# _, threshold = cv2.threshold(img, 110, 255, cv2.THRESH_BINARY)
+
+# # Detecting contours in image.
+# contours, _= cv2.findContours(threshold, cv2.RETR_TREE,
+#                                cv2.CHAIN_APPROX_SIMPLE)
+
+# # Going through every contours found in the image.
+# for cnt in contours :
+  
+#     approx = cv2.approxPolyDP(cnt, 0.009 * cv2.arcLength(cnt, True), True)
+  
+#     # draws boundary of contours.
+#     cv2.drawContours(img2, [approx], 0, (0, 0, 255), 5) 
+  
+#     # Used to flatted the array containing
+#     # the co-ordinates of the vertices.
+#     n = approx.ravel() 
+#     i = 0
+  
+#     for j in n :
+#         if(i % 2 == 0):
+#             x = n[i]
+#             y = n[i + 1]
+  
+#             # String containing the co-ordinates.
+#             string = str(x) + " " + str(y) 
+  
+#             if(i == 0):
+#                 # text on topmost co-ordinate.
+#                 cv2.putText(img2, "Arrow tip", (x, y),
+#                                 font, 0.5, (255, 0, 0)) 
+#             else:
+#                 # text on remaining co-ordinates.
+#                 cv2.putText(img2, string, (x, y), 
+#                           font, 0.5, (0, 255, 0)) 
+#         i = i + 1
+  
+# # Showing the final image.
+# cv2.imshow('image2', img2) 
+  
+# # Exiting the window if 'q' is pressed on the keyboard.
+# if cv2.waitKey(0) & 0xFF == ord('q'): 
+#     cv2.destroyAllWindows()
+
+# ============================================================================
