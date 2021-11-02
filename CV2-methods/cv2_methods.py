@@ -514,3 +514,230 @@ P6 – Same as above but for color components // Not used in a grayscale image.
 #     cv2.destroyAllWindows()
 
 # ============================================================================
+
+'''
+# ====================#=======================================================
+# Log Transformations #
+# ====================#
+'''
+# img = cv2.imread('toad.jpg',0)
+
+# # Apply log transform.
+# c = 255/(np.log(1 + np.max(img)))
+# log_transformed = c * np.log(1 + img)
+  
+# # Specify the data type.
+# log_transformed = np.array(log_transformed, dtype = np.uint8)
+# cv2.imshow('log_transformed', log_transformed)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+'''
+# =====================#
+# Gamma Transformation #
+# =====================#
+'''
+# img = cv2.imread('toad.jpg',0)
+# # Trying 4 gamma values.
+# for gamma in [0.1, 0.5, 1.2, 2.2]:
+      
+#     # Apply gamma correction.
+#     gamma_corrected = np.array(255*(img / 255) ** gamma, dtype = 'uint8')
+  
+#     # Save edited images.
+#     cv2.imshow('gamma_transformed'+str(gamma), gamma_corrected)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+# ============================================================================
+
+'''
+# ===========================================#================================
+# Background subtraction. Убираем задний фон #
+# ===========================================#
+'''
+# cap = cv2.VideoCapture(0)
+# fgbg = cv2.createBackgroundSubtractorMOG2()
+
+# while(1):
+#     ret, frame = cap.read()
+ 
+#     fgmask = fgbg.apply(frame)
+  
+#     cv2.imshow('fgmask', fgmask)
+#     cv2.imshow('frame',frame )
+ 
+     
+#     k = cv2.waitKey(30) & 0xff
+#     if k == 27:
+#         break
+     
+ 
+# cap.release()
+# cv2.destroyAllWindows()
+# ============================================================================
+
+'''
+# =========================#==================================================
+# Morphological Operations #
+# =========================#
+'''
+# screenRead = cv2.VideoCapture(0)
+ 
+# while(1):
+#     _, image = screenRead.read()
+     
+#     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+     
+#     # defining the range of masking
+#     blue1 = np.array([110, 70, 60])
+#     blue2 = np.array([130, 255, 255])
+     
+#     # initializing the mask to be
+#     # convoluted over input image
+#     mask = cv2.inRange(hsv, blue1, blue2)
+ 
+#     # passing the bitwise_and over
+#     # each pixel convoluted
+#     res = cv2.bitwise_and(image, image, mask = mask)
+     
+#     # defining the kernel i.e. Structuring element
+#     kernel = np.ones((5, 5), np.uint8)
+     
+#     # defining the opening function
+#     # over the image and structuring element
+#     opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    
+#     cv2.imshow('Mask', mask)
+#     cv2.imshow('Opening', opening)
+     
+#     k = cv2.waitKey(30) & 0xff
+#     if k == 27:
+#         break
+# cv2.destroyAllWindows()
+# screenRead.release()
+# ============================================================================
+
+'''
+# =========#==================================================================
+# Gradient #
+# =========#
+'''
+# screenRead = cv2.VideoCapture(0)
+
+# while(1):
+#     _, image = screenRead.read()
+
+#     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+      
+#     # defining the range of masking
+#     blue1 = np.array([110, 50, 50])
+#     blue2 = np.array([130, 255, 255])
+      
+#     # initializing the mask to be
+#     # convoluted over input image
+#     mask = cv2.inRange(hsv, blue1, blue2)
+  
+#     # passing the bitwise_and over
+#     # each pixel convoluted
+#     res = cv2.bitwise_and(image, image, mask = mask)
+      
+#     # defining the kernel i.e. Structuring element
+#     kernel = np.ones((5, 5), np.uint8)
+      
+#     # defining the gradient function 
+#     # over the image and structuring element
+#     gradient = cv2.morphologyEx(mask, cv2.MORPH_GRADIENT, kernel)
+     
+#     cv2.imshow('Gradient', gradient)
+
+#     k = cv2.waitKey(30) & 0xff
+#     if k == 27:
+#         break
+# cv2.destroyAllWindows()
+# screenRead.release()
+# ============================================================================
+
+'''
+# ===================#========================================================
+# Image segmentation # (На самом деле такое себе сенментирование)
+# ===================#
+'''
+# img = cv2.imread('toad.jpg')
+# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+  
+# ret, thresh = cv2.threshold(gray, 0, 255,
+#                             cv2.THRESH_BINARY_INV +
+#                             cv2.THRESH_OTSU)
+
+# # Noise removal using Morphological
+# # closing operation
+# kernel = np.ones((3, 3), np.uint8)
+# closing = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE,
+#                             kernel, iterations = 2)
+  
+# # Background area using Dialation
+# bg = cv2.dilate(closing, kernel, iterations = 1)
+  
+# # Finding foreground area
+# dist_transform = cv2.distanceTransform(closing, cv2.DIST_L2, 0)
+# ret, fg = cv2.threshold(dist_transform, 0.02
+#                         * dist_transform.max(), 255, 0)
+# cv2.imshow('fg', fg)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+# ============================================================================
+
+'''
+# ==================================#=========================================
+# Line detection. Обнаружение линий #
+# ==================================#
+'''
+img = cv2.imread('leaf.jpg')
+
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+  
+# Apply edge detection method on the image
+edges = cv2.Canny(gray,50,150,apertureSize = 3)
+  
+# This returns an array of r and theta values
+lines = cv2.HoughLines(edges,1,np.pi/180, 200)
+  
+# The below for loop runs till r and theta values 
+# are in the range of the 2d array
+for r,theta in lines[0]:
+      
+    # Stores the value of cos(theta) in a
+    a = np.cos(theta)
+  
+    # Stores the value of sin(theta) in b
+    b = np.sin(theta)
+      
+    # x0 stores the value rcos(theta)
+    x0 = a*r
+      
+    # y0 stores the value rsin(theta)
+    y0 = b*r
+      
+    # x1 stores the rounded off value of (rcos(theta)-1000sin(theta))
+    x1 = int(x0 + 1000*(-b))
+      
+    # y1 stores the rounded off value of (rsin(theta)+1000cos(theta))
+    y1 = int(y0 + 1000*(a))
+  
+    # x2 stores the rounded off value of (rcos(theta)+1000sin(theta))
+    x2 = int(x0 - 1000*(-b))
+      
+    # y2 stores the rounded off value of (rsin(theta)-1000cos(theta))
+    y2 = int(y0 - 1000*(a))
+      
+    # cv2.line draws a line in img from the point(x1,y1) to (x2,y2).
+    # (0,0,255) denotes the colour of the line to be 
+    #drawn. In this case, it is red. 
+    cv2.line(img,(x1,y1), (x2,y2), (0,0,255),2)
+      
+# All the changes made in the input image are finally
+# written on a new image houghlines.jpg
+cv2.imshow('linesDetected.jpg', img)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
