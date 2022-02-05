@@ -54,16 +54,16 @@ path_img = r'D:/abyss_of_work/main/Aleksandr_G.K/2021/Image-processing/CV2-metho
 # ======================#
 '''
 
-# cap = cv2.VideoCapture(0)
-# while(1):
-#     _, img = cap.read()
-#     cv2.imshow('img', img)
+cap = cv2.VideoCapture(0)
+while(1):
+    _, img = cap.read()
+    cv2.imshow('img', img)
     
-#     k = cv2.waitKey(30) & 0xff
-#     if k == 27:
-#         break
-# cap.release()
-# cv2.destroyAllWindows()
+    k = cv2.waitKey(30) & 0xff
+    if k == 27:
+        break
+cap.release()
+cv2.destroyAllWindows()
 
 # ============================================================================
 
