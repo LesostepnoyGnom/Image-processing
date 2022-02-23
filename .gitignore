@@ -24,3 +24,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.jpg
+*.png
+
+# Таблицы
+*.xlsx
