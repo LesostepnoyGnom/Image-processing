@@ -10,8 +10,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from scipy import optimize
-import scipy.optimize as opt
+
+from scipy.optimize import root,fsolve
 
 t = -1 # константы для уравнений
 C1 = 10
@@ -38,16 +38,27 @@ for j in range(num_of_images):
         X = data.loc[i, 'u']
         Y = data.loc[i, 'v']
         
-        U1 = sy.exp(Lcr*t) * (C1*sy.cos(Lci*t) + C2*sy.sin(Lci*t)) - X
-        U2 = sy.exp(Lcr*t) * (C2*sy.cos(Lci*t) + C1*sy.sin(Lci*t)) - Y
-    
+        def F(variables):
+            (Lcr, Lci) = variables
+            U1 = sy.exp(Lcr*t) * (C1*sy.cos(Lci*t) + C2*sy.sin(Lci*t)) - X
+            U2 = sy.exp(Lcr*t) * (C2*sy.cos(Lci*t) + C1*sy.sin(Lci*t)) - Y
+            return [U1, U2]
+        
         # L = sy.solve([U1, U2], [Lcr, Lci])
-        L = opt.fsolve([U1, U2], (1, 1))
-    
+        L = fsolve(F, (1,1))
+        print(L)
+        
+        lambda_ci1.append(L[0])
+        lambda_ci2.append(L[1])
+        print(i,',', L[0],',', L[1])
+        
+        '''
+        это используется для solve
         lambda_ci1.append(L[1][0])
         lambda_ci2.append(L[1][1])
     
         print(i,',', L[1][0],',', L[1][1])
+        '''
     
     print(lambda_ci1, lambda_ci2)
     
