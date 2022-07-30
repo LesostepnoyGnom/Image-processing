@@ -13,7 +13,7 @@ import os
 
 from scipy.optimize import root,fsolve
 
-t = -1 # константы для уравнений
+t = -1 # константы для уравнений (значения рандомные)
 C1 = 10
 C2 = 5
 
@@ -26,8 +26,8 @@ os.chdir("D:/abyss_of_work/main/Aleksandr_G.K/Projects/Image-processing/vortex_a
 num_of_images = len(os.listdir('.'))
 for j in range(num_of_images):
     
-    df = pd.read_csv('exp_'+str(j)+'.txt', sep='\t') # читаем таблицу
-    df.to_excel('output.xlsx', 'Sheet1', index=False) #перевд в эксель
+    df = pd.read_csv('exp_'+str(j)+'.txt', sep='\t') # читаем таблицу с координатами векторов (получаем её из PIV анализа)
+    df.to_excel('output.xlsx', 'Sheet1', index=False) #перевод в эксель
     
     data = pd.read_excel('output.xlsx')
     
@@ -92,7 +92,7 @@ X, Y = np.meshgrid(tuple(xx), tuple(yy))
 Image1 - Мнимая часть первого решения
 Real1 - Действительная часть первого решения
 Real2 - Действительная часть второго решения
-У второго решения нет мнимой части
+У второго решения мнимой части нет
 '''
 os.chdir("D:D:/abyss_of_work/main/Aleksandr_G.K/Projects/Image-processing/vortex_analysis/drop/L")
 num_of_files = len(os.listdir('.'))
